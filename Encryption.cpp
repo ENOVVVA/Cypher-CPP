@@ -34,17 +34,29 @@ long long Minutes_S;
 long long Hours_S;
 	public:
 	void typeLog(string output,bool scnd_output = 0){
-		ofstream log_file (Log_file);
+		ofstream log_file (Log_file, fstream::ate);
 		if (scnd_output == 0){
 			Seconds_S = seconds_since_start%60;
 			Minutes_S = seconds_since_start%3600/60;
 			Hours_S = seconds_since_start/3600;
-			log_file << '[' << Hours_S << ':' << Minutes_S << ':' << Seconds_S << ']' << output; 
+			log_file << '[';
+			if (Hours_S<10){log_file << '0' << Hours_S;}else log_file << Hours_S;
+			log_file << " : ";
+			if (Minutes_S<10){log_file << '0' << Minutes_S;}else log_file << Minutes_S;
+			log_file << " : ";
+			if (Seconds_S<10){log_file << '0' << Seconds_S << ']';}else log_file << Seconds_S;
+			log_file << " ---> " << output << endl;
 		}else {
 			Seconds_S = seconds_since_start%60;
 			Minutes_S = seconds_since_start%3600/60;
 			Hours_S = seconds_since_start/3600;
-			log_file << '[' << Hours_S << ':' << Minutes_S << ':' << Seconds_S << ']' << output; 
+			log_file << '[';
+			if (Hours_S<10){log_file << '0' << Hours_S;}else log_file << Hours_S;
+			log_file << " : ";
+			if (Minutes_S<10){log_file << '0' << Minutes_S;}else log_file << Minutes_S;
+			log_file << " : ";
+			if (Seconds_S<10){log_file << '0' << Seconds_S << ']';}else log_file << Seconds_S;
+			log_file << " ---> " << output << endl;
 		}
 		log_file.close();
 	}
@@ -131,7 +143,7 @@ int main()
 	Menu Menu;
 	Log Log;
 	//Menu.MainMenu();
-	Log.typeLog("Initializatied");
+	Log.typeLog("Initializatied Log System");
 
 	return 0;
 }
