@@ -1,19 +1,18 @@
 #include "iostream"
 
 using namespace std;
-
-long long iterration = 0;
-
 class Menu{
 
 public:
 
-	void clearScreen(long long _length = 99){
-   	printf ("\n\n\n\n\n\n\n\n");
+	void clearScreen(long long _length = 2){
+		for (int i = 0; i <= _length; i++){
+			printf("\n\n\n\n\n\n\n\n");
+		}
 	}
 
 	void show(){
-		if (iterration > 0) iterration = 0;
+
 		clearScreen();
 		cout << "\t\t\t\t\t\t\t\t" << "###             ###	//########	####         ##	     ##        ##" << endl;
 		cout << "\t\t\t\t\t\t\t\t" << "## ##         ## ##	##‾‾‾‾‾‾‾‾	## ##        ##	     ##        ##" << endl;
@@ -25,22 +24,23 @@ public:
 		cout << "\t\t\t\t\t\t\t\t" << "##               ##	##        	##       ##  ##	     ##        ##" << endl;
 		cout << "\t\t\t\t\t\t\t\t" << "##               ##	##________	##        ## ##	     ###      ###" << endl;
 		cout << "\t\t\t\t\t\t\t\t" << "##               ##	\\\\########	##         ####	      ##########" << endl;
-		cout << "\t\t\t\t\t\t\t\t" << "_________________________________________________________________________" << endl << endl;
+		cout << "\t\t\t\t\t\t\t\t" << "_________________________________________________________________________" << "\n\n";
 		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "What do you want to do?\n" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t" << "1. Password Encryption." << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t" << "-----------------------" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t" << "2. Password Decryption." << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t" << "-----------------------" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t" << "3. Exit." << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "  Password Encryption" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "-----------------------" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "  Password Decryption" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "-----------------------" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "  Check Hash Between" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "-----------------------" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t\t" << " Exit" << endl;
 	}
 };
-
+   
 
 int main()
 {
 	Menu menu;
-
-	menu.show();
+ 	menu.show();
 
 	return 0;
 }
