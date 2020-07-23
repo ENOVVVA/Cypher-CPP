@@ -2,10 +2,15 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include "coniow.h"
+#include <ctime>
 
-#define ENCRYPTION_FILE "Encryption.txt"
+#define Out_Encrypt_File "Encryption.txt"
+#define In_Encrypt_File "PUT HERE ENCRYPTED FILE.txt"
+#define Log_file "Log.txt"
 
 using namespace std;
+
 
 void clearScreen(long long _length = 1){
 	for (int i = 0; i <= _length; i++){
@@ -14,17 +19,43 @@ void clearScreen(long long _length = 1){
 }
 void Tabulation(long long _length = 1){
 	for (int i = 0; i <= _length; i++){
-		printf("\t\t\t\t\t       ");
+		printf("\t\t\t\t\t\t");
 	}
 }
 
-class Menu{
+void Initialization(){
+}
 
-public:
+class Log{
+time_t start = time(0);
+int seconds_since_start = difftime(time(0), start);
+long long Seconds_S;
+long long Minutes_S;
+long long Hours_S;
+	public:
+	void typeLog(string output,bool scnd_output = 0){
+		ofstream log_file (Log_file);
+		if (scnd_output == 0){
+			Seconds_S = seconds_since_start%60;
+			Minutes_S = seconds_since_start%3600/60;
+			Hours_S = seconds_since_start/3600;
+			log_file << '[' << Hours_S << ':' << Minutes_S << ':' << Seconds_S << ']' << output; 
+		}else {
+			Seconds_S = seconds_since_start%60;
+			Minutes_S = seconds_since_start%3600/60;
+			Hours_S = seconds_since_start/3600;
+			log_file << '[' << Hours_S << ':' << Minutes_S << ':' << Seconds_S << ']' << output; 
+		}
+		log_file.close();
+	}
+};
+
+class Menu{
 	bool EncPass;
 	bool DecPass;
+public:
 
-	void HomeMenu(){
+	void MainMenu(){
 		clearScreen();
 
 		cout << "\t\t\t\t\t\t\t\t" << "###             ###	//########	####         ##	     ##        ##" << endl;
@@ -38,18 +69,17 @@ public:
 		cout << "\t\t\t\t\t\t\t\t" << "##               ##	##________	##        ## ##	     ###      ###" << endl;
 		cout << "\t\t\t\t\t\t\t\t" << "##               ##	\\\\########	##         ####	      ##########" << endl;
 		cout << "\t\t\t\t\t\t\t\t" << "_________________________________________________________________________" << "\n\n";
-		// Але мені в коробці не очень зайшло мені кажеться лібше без неї.
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "/-------------------------\\" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "|| What do you want to do?||" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "#  ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ||" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "#   Password Encryption   ||" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "#-------------------------||" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "#   Password Decryption   ||" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "#-------------------------||" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "#   Check Hash Between    ||" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "#-------------------------||" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "#          Exit           ||" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "\\-------------------------/" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << " //-----------------------\\\\" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "|| What do you want to do? ||" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||  ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓||" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||   Password Encryption   ||" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||-------------------------||" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||   Password Decryption   ||" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||-------------------------||" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||   Check Hash Between    ||" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||-------------------------||" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||          Exit           ||" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << " \\\\-----------------------//" << endl;
 	}
 
 	void EncMenu(){
@@ -88,18 +118,20 @@ public:
 		cout << "\t\t\t\t\t\t\t\t\t" << "########	\\\\########        \\\\########" << endl;
 		cout << "\t\t\t\t\t\t\t\t\t" << "-__________________________________________-" << "\n\n";
 		cout << "\t\t\t\t\t\t\t\t\t\t" << "  Enter Encryption Password: " << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t" << "_---------------------------_" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t" << "/---------------------------\\" << endl;
 		Tabulation();
 		cin >> DecPass;
 	}
 };
 
+
+
 int main()
 {	
-
 	Menu Menu;
-	Menu.DecMenu();
-
+	Log Log;
+	//Menu.MainMenu();
+	Log.typeLog("Initializatied");
 
 	return 0;
 }
