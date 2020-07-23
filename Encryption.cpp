@@ -1,13 +1,16 @@
 #include "iostream"
+#include <string>
+#include <fstream>
+#include <vector>
 
 using namespace std;
 class Menu{
 
 public:
 
-	void clearScreen(long long _length = 2){
+	void clearScreen(long long _length = 1){
 		for (int i = 0; i <= _length; i++){
-			printf("\n\n\n\n\n\n\n\n");
+			printf("\n\n\n\n\n\n\n\n\n\n\n");
 		}
 	}
 
@@ -28,7 +31,7 @@ public:
 		// Але мені в коробці не очень зайшло мені кажеться лібше без неї.
 		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "_-------------------------_" << endl;
 		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "# What do you want to do? #" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "#  ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓  #" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "#  ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓  #" << endl;
 		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "#   Password Encryption   #" << endl;
 		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "#-------------------------#" << endl;
 		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "#   Password Decryption   #" << endl;
