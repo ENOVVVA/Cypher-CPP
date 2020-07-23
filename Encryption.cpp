@@ -25,14 +25,17 @@ public:
 		cout << "\t\t\t\t\t\t\t\t" << "##               ##	##________	##        ## ##	     ###      ###" << endl;
 		cout << "\t\t\t\t\t\t\t\t" << "##               ##	\\\\########	##         ####	      ##########" << endl;
 		cout << "\t\t\t\t\t\t\t\t" << "_________________________________________________________________________" << "\n\n";
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "What do you want to do?\n" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "  Password Encryption" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "-----------------------" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "  Password Decryption" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "-----------------------" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "  Check Hash Between" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "-----------------------" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t\t" << " Exit" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "_-------------------------_" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "# What do you want to do? #" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "#                         #" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "#   Password Encryption   #" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "#-------------------------#" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "#   Password Decryption   #" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "#-------------------------#" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "#   Check Hash Between    #" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "#-------------------------#" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "#          Exit           #" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "‾-------------------------‾" << endl;
 	}
 };
    
