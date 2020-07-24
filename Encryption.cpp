@@ -2,8 +2,8 @@
 #include <string>
 #include <fstream>
 #include <vector>
-#include "coniow.h"
 #include <ctime>
+#include <ncurses.h>
 
 #define Out_Encrypt_File "Encryption.txt"
 #define In_Encrypt_File "PUT HERE ENCRYPTED FILE.txt"
@@ -62,15 +62,21 @@ long long Hours_S;
 	}
 };
 
-class Menu{
+class Menu : public Log{
 	bool EncPass;
 	bool DecPass;
+	bool MainMenu_B;
+	bool MainEncrypt_B;
+	bool MainDecrypt_B;
+	bool MainSettings_B;
+ 
+	int Arrow_MainMenu=1;
 public:
 
 	void MainMenu(){
-		clearScreen();
-
-		cout << "\t\t\t\t\t\t\t\t" << "###             ###	//########	####         ##	     ##        ##" << endl;
+		//clearScreen();
+		
+		cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t" << "###             ###	//########	####         ##	     ##        ##" << endl;
 		cout << "\t\t\t\t\t\t\t\t" << "## ##         ## ##	##‾‾‾‾‾‾‾‾	## ##        ##	     ##        ##" << endl;
 		cout << "\t\t\t\t\t\t\t\t" << "##   ##     ##   ##	##        	##  ##       ##	     ##        ##" << endl;
 		cout << "\t\t\t\t\t\t\t\t" << "##     ##_##     ##	##________	##   ##      ##	     ##        ##" << endl;
@@ -84,15 +90,51 @@ public:
 		cout << "\t\t\t\t\t\t\t\t\t\t\t" << " //-----------------------\\\\" << endl;
 		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "|| What do you want to do? ||" << endl;
 		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||  ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓||" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||   Password Encryption   ||" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t"  <<"||-------------------------||" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||";
+		if (Arrow_MainMenu==1) cout << "\033[37;44m\033[1m        Encrypt          \033[0m";
+		else 
+			cout << " \t  Encrypt\t   ";
+			cout << "||" << endl;
 		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||-------------------------||" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||   Password Decryption   ||" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||";
+		if (Arrow_MainMenu==2) cout << "\033[37;44m\033[1m   Decrypt         \033[0m";
+		else 
+			cout << " \t  Decrypt \t   ";
+			cout << "||" << endl;
+		
 		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||-------------------------||" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||   Check Hash Between    ||" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||";
+		if (Arrow_MainMenu==3) cout << "\033[37;44m\033[1m    Check Hash Between         \033[0m";
+		else 
+			cout << "   Check Hash Between    ";
+			cout << "||" << endl;
+		
 		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||-------------------------||" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||          Exit           ||" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||";
+		if (Arrow_MainMenu==4) cout << "\033[37;44m\033[1m        Settings         \033[0m";
+		else 
+			cout << "        Settings         ";
+			cout << "||" << endl;
+		
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||-------------------------||" << endl;
+		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||";
+		if (Arrow_MainMenu==5) cout << "\033[37;44m\033[1m        Exit         \033[0m";
+		else 
+			cout << "          Exit           ";
+			cout << "||" << endl;
+		
 		cout << "\t\t\t\t\t\t\t\t\t\t\t" << " \\\\-----------------------//" << endl;
+		cout << "\n\n\t\t\t\t\t\t\t\t\t\t\t  < Select >\t  < Help >";
 	}
+
+	/*void getKeyboard(char* key){
+		while (1==1){
+		switch(getch()){
+			case ''
+		}
+		}
+	}*/
 
 	void EncMenu(){
 		clearScreen();
@@ -134,16 +176,24 @@ public:
 		Tabulation();
 		cin >> DecPass;
 	}
+	void Settings(){
+
+	}
 };
 
 
 
 int main()
 {	
+	//initscr();
 	Menu Menu;
 	Log Log;
-	//Menu.MainMenu();
+	Menu.MainMenu();
 	Log.typeLog("Initializatied Log System");
 
+	//endwin();
 	return 0;
 }
+
+
+
