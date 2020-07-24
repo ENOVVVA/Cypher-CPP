@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <ctime>
+#include <unistd.h>
 #include <ncurses.h>
 
 #define Out_Encrypt_File "Encryption.txt"
@@ -14,12 +15,12 @@ using namespace std;
 
 void clearScreen(long long _length = 1){
 	for (int i = 0; i <= _length; i++){
-		printf("\n\n\n\n\n\n\n\n\n\n\n");
+		printw("\n\n\n\n\n\n\n\n\n\n\n");
 	}
 }
 void Tabulation(long long _length = 1){
 	for (int i = 0; i <= _length; i++){
-		printf("\t\t\t\t\t\t");
+		printw("\t\t\t\t\t\t");
 	}
 }
 
@@ -45,7 +46,7 @@ long long Hours_S;
 			if (Minutes_S<10){log_file << '0' << Minutes_S;}else log_file << Minutes_S;
 			log_file << " : ";
 			if (Seconds_S<10){log_file << '0' << Seconds_S << ']';}else log_file << Seconds_S;
-			log_file << " ---> " << output << endl;
+			log_file << " ---> " << output << '\n';
 		}else {
 			Seconds_S = seconds_since_start%60;
 			Minutes_S = seconds_since_start%3600/60;
@@ -56,7 +57,7 @@ long long Hours_S;
 			if (Minutes_S<10){log_file << '0' << Minutes_S;}else log_file << Minutes_S;
 			log_file << " : ";
 			if (Seconds_S<10){log_file << '0' << Seconds_S << ']';}else log_file << Seconds_S;
-			log_file << " ---> " << output << endl;
+			log_file << " ---> " << output << '\n';
 		}
 		log_file.close();
 	}
@@ -69,90 +70,84 @@ class Menu : public Log{
 	bool MainEncrypt_B;
 	bool MainDecrypt_B;
 	bool MainSettings_B;
- 
-	int Arrow_MainMenu=1;
+	bool Input_B;
+
+	size_t Key;
+	int Arrow_MainMenu=0;
 public:
 
 	void MainMenu(){
 		//clearScreen();
 		
-		cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t" << "###             ###	//########	####         ##	     ##        ##" << endl;
-		cout << "\t\t\t\t\t\t\t\t" << "## ##         ## ##	##‾‾‾‾‾‾‾‾	## ##        ##	     ##        ##" << endl;
-		cout << "\t\t\t\t\t\t\t\t" << "##   ##     ##   ##	##        	##  ##       ##	     ##        ##" << endl;
-		cout << "\t\t\t\t\t\t\t\t" << "##     ##_##     ##	##________	##   ##      ##	     ##        ##" << endl;
-		cout << "\t\t\t\t\t\t\t\t" << "##               ##	##########	##    ##     ##	     ##        ##" << endl;
-		cout << "\t\t\t\t\t\t\t\t" << "##               ##	##‾‾‾‾‾‾‾‾	##     ##    ##	     ##        ##" << endl;
-		cout << "\t\t\t\t\t\t\t\t" << "##               ##	##        	##      ##   ##	     ##        ##" << endl;
-		cout << "\t\t\t\t\t\t\t\t" << "##               ##	##        	##       ##  ##	     ##        ##" << endl;
-		cout << "\t\t\t\t\t\t\t\t" << "##               ##	##________	##        ## ##	     ###      ###" << endl;
-		cout << "\t\t\t\t\t\t\t\t" << "##               ##	\\\\########	##         ####	      ##########" << endl;
-		cout << "\t\t\t\t\t\t\t\t" << "_________________________________________________________________________" << "\n\n";
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << " //-----------------------\\\\" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "|| What do you want to do? ||" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||  ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓||" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t"  <<"||-------------------------||" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||";
-		if (Arrow_MainMenu==1) cout << "\033[37;44m\033[1m        Encrypt          \033[0m";
+		printw ("\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t###             ###	//########	####         ##	     ##        ##\n") ;
+		printw ("\t\t\t\t\t\t\t\t## ##         ## ##	##		## ##        ##	     ##        ##\n") ;
+		printw ("\t\t\t\t\t\t\t\t##   ##     ##   ##	##        	##  ##       ##	     ##        ##\n") ;
+		printw ("\t\t\t\t\t\t\t\t##     ##_##     ##	##________	##   ##      ##	     ##        ##\n") ;
+		printw ("\t\t\t\t\t\t\t\t##               ##	##########	##    ##     ##	     ##        ##\n") ;
+		printw ("\t\t\t\t\t\t\t\t##               ##	##		##     ##    ##	     ##        ##\n") ;
+		printw ("\t\t\t\t\t\t\t\t##               ##	##        	##      ##   ##	     ##        ##\n") ;
+		printw ("\t\t\t\t\t\t\t\t##               ##	##        	##       ##  ##	     ##        ##\n") ;
+		printw ("\t\t\t\t\t\t\t\t##               ##	##________	##        ## ##	     ###      ###\n") ;
+		printw ("\t\t\t\t\t\t\t\t##               ##	\\\\########	##         ####	      ##########\n") ;
+		printw ("\t\t\t\t\t\t\t\t_________________________________________________________________________\n\n\n\n");
+		printw ("\t\t\t\t\t\t\t\t\t\t\t //-----------------------\\\\\n") ;
+		printw ("\t\t\t\t\t\t\t\t\t\t\t|| What do you want to do? ||\n") ;
+		printw ("\t\t\t\t\t\t\t\t\t\t\t||  $$$$$$$$$$$$$$$$$$$$$  ||\n") ;
+		printw ("\t\t\t\t\t\t\t\t\t\t\t||-------------------------||\n") ;
+		printw ("\t\t\t\t\t\t\t\t\t\t\t||");
+		if (Arrow_MainMenu==1) printw ("\033[37;44m\033[1m        Encrypt          \033[0m");
 		else 
-			cout << " \t  Encrypt\t   ";
-			cout << "||" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||-------------------------||" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||";
-		if (Arrow_MainMenu==2) cout << "\033[37;44m\033[1m   Decrypt         \033[0m";
+			printw (" \t  Encrypt\t   ");
+			printw ("||\n");
+		printw ("\t\t\t\t\t\t\t\t\t\t\t||-------------------------||\n") ;
+		printw ("\t\t\t\t\t\t\t\t\t\t\t||");
+		if (Arrow_MainMenu==2) printw ("\033[37;44m\033[1m   Decrypt         \033[0m");
 		else 
-			cout << " \t  Decrypt \t   ";
-			cout << "||" << endl;
+			printw (" \t  Decrypt \t   ");
+			printw ("||\n") ;
 		
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||-------------------------||" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||";
-		if (Arrow_MainMenu==3) cout << "\033[37;44m\033[1m    Check Hash Between         \033[0m";
+		printw ("\t\t\t\t\t\t\t\t\t\t\t||-------------------------||\n") ;
+		printw ("\t\t\t\t\t\t\t\t\t\t\t||");
+		if (Arrow_MainMenu==3) printw ("\033[37;44m\033[1m    Check Hash Between         \033[0m");
 		else 
-			cout << "   Check Hash Between    ";
-			cout << "||" << endl;
+			printw ("   Check Hash Between    ");
+			printw ("||\n");
 		
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||-------------------------||" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||";
-		if (Arrow_MainMenu==4) cout << "\033[37;44m\033[1m        Settings         \033[0m";
+		printw ("\t\t\t\t\t\t\t\t\t\t\t||-------------------------||\n") ;
+		printw ("\t\t\t\t\t\t\t\t\t\t\t||");
+		if (Arrow_MainMenu==4) printw ("\033[37;44m\033[1m        Settings         \033[0m");
 		else 
-			cout << "        Settings         ";
-			cout << "||" << endl;
+			printw ("        Settings         ");
+			printw ("||\n") ;
 		
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||-------------------------||" << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << "||";
-		if (Arrow_MainMenu==5) cout << "\033[37;44m\033[1m        Exit         \033[0m";
+		printw ("\t\t\t\t\t\t\t\t\t\t\t||-------------------------||\n") ;
+		printw ("\t\t\t\t\t\t\t\t\t\t\t||");
+		if (Arrow_MainMenu==5) printw ("\033[37;44m\033[1m        Exit         \033[0m");
 		else 
-			cout << "          Exit           ";
-			cout << "||" << endl;
+			printw ("          Exit           ");
+			printw ("||\n");
 		
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << " \\\\-----------------------//" << endl;
-		cout << "\n\n\t\t\t\t\t\t\t\t\t\t\t  < Select >\t  < Help >";
+		printw ("\t\t\t\t\t\t\t\t\t\t\t \\\\-----------------------//\n");
+		printw ("\n\n\t\t\t\t\t\t\t\t\t\t\t  < Select >\t  < Help >\n");
+		refresh();
 	}
-
-	/*void getKeyboard(char* key){
-		while (1==1){
-		switch(getch()){
-			case ''
-		}
-		}
-	}*/
-
 	void EncMenu(){
 		clearScreen();
 
-		cout << "\t\t\t\t\t\t\t" << "//########	####         ##	  //########	#########     ##        ##  #####    ##############" << endl;
-		cout << "\t\t\t\t\t\t\t" << "##‾‾‾‾‾‾‾‾	## ##        ##	  ##‾‾‾‾‾‾‾‾	##      ##     ##      ##   ##  ##         ##      " << endl;
-		cout << "\t\t\t\t\t\t\t" << "##        	##  ##       ##	  ##        	##       ##     ##    ##    ##   ##        ##      " << endl;
-		cout << "\t\t\t\t\t\t\t" << "##________	##   ##      ##	  ##      	##        ##     ##  ##     ##   ##        ##         " << endl;
-		cout << "\t\t\t\t\t\t\t" << "##########	##    ##     ##	  ##      	##       ##       ####      ##   ##        ##         " << endl;
-		cout << "\t\t\t\t\t\t\t" << "##‾‾‾‾‾‾‾‾	##     ##    ##	  ##        	##     ###         ##       ##  ##         ##      " << endl;
-		cout << "\t\t\t\t\t\t\t" << "##        	##      ##   ##	  ##        	########           ##       #####          ##      " << endl;
-		cout << "\t\t\t\t\t\t\t" << "##        	##       ##  ##	  ##        	##    ###          ##       ##             ##      " << endl;
-		cout << "\t\t\t\t\t\t\t" << "##________	##        ## ##	  ##________	##      ##         ##       ##             ##      " << endl;
-		cout << "\t\t\t\t\t\t\t" << "\\\\########	##         ####	  \\\\########	##       ##        ##       ##             ##      " << endl;
-		cout << "\t\t\t\t\t\t\t" << "-_____________________________________________________________________________________________-" << "\n\n";
-		cout << "\t\t\t\t\t\t\t\t\t\t" << "      At least 4 characters" << "\n\n";
-		cout << "\t\t\t\t\t\t\t\t\t\t\t" << " Enter password: " << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t" << "      _------------------_" << endl;
+		printw ("\t\t\t\t\t\t\t //########	####         ##	  //########	#########     ##        ##  #####    ##############"  );
+		printw ("\t\t\t\t\t\t\t ##	    	## ##        ##	  ##		  	##      ##     ##      ##   ##  ##         ##      "  );
+		printw ("\t\t\t\t\t\t\t ##        	##  ##       ##	  ##        	##       ##     ##    ##    ##   ##        ##      "  );
+		printw ("\t\t\t\t\t\t\t ##________	##   ##      ##	  ##      	##        ##     ##  ##     ##   ##        ##         "  );
+		printw ("\t\t\t\t\t\t\t ##########	##    ##     ##	  ##      	##       ##       ####      ##   ##        ##         "  );
+		printw ("\t\t\t\t\t\t\t ##	  		##     ##    ##	  ##        	##     ###         ##       ##  ##         ##      "  );
+		printw ("\t\t\t\t\t\t\t ##        	##      ##   ##	  ##        	########           ##       #####          ##      "  );
+		printw ("\t\t\t\t\t\t\t ##        	##       ##  ##	  ##        	##    ###          ##       ##             ##      "  );
+		printw ("\t\t\t\t\t\t\t ##________	##        ## ##	  ##________	##      ##         ##       ##             ##      "  );
+		printw ("\t\t\t\t\t\t\t \\\\########	##         ####	  \\\\########	##       ##        ##       ##             ##      "  );
+		printw ("\t\t\t\t\t\t\t -_____________________________________________________________________________________________- \n\n");
+		printw ("\t\t\t\t\t\t\t\t\t\t       At least 4 characters \n\n");
+		printw ("\t\t\t\t\t\t\t\t\t\t\t  Enter password: "  );
+		printw ("\t\t\t\t\t\t\t\t\t\t       _------------------_"  );
 		Tabulation();
 		cin >> EncPass;
 	}
@@ -160,19 +155,19 @@ public:
 	void DecMenu(){
 		clearScreen();
 
-		cout << "\t\t\t\t\t\t" << "########	//########    //########    #########    ##        ##    #####    ##############       " << endl;
-		cout << "\t\t\t\t\t\t" << "##	##      ##‾‾‾‾‾‾‾‾    ##‾‾‾‾‾‾‾‾    ##      ##    ##      ##     ##  ##         ##           " << endl;
-		cout << "\t\t\t\t\t\t" << "##	 ##     ##            ##            ##       ##    ##    ##      ##   ##        ##           " << endl;
-		cout << "\t\t\t\t\t\t" << "##	 ##     ##________    ##     	    ##        ##    ##  ##       ##   ##        ##             " << endl;
-		cout << "\t\t\t\t\t\t" << "##	 ##     ##########    ##    	    ##       ##      ####        ##   ##        ##             " << endl;
-		cout << "\t\t\t\t\t\t" << "##       ##     ##‾‾‾‾‾‾‾‾    ##            ##     ###        ##         ##  ##         ##      " << endl;
-		cout << "\t\t\t\t\t\t" << "##	 ##     ##            ##            ########          ##         #####          ##           " << endl;
-		cout << "\t\t\t\t\t\t" << "##	 ##     ##            ##            ##    ###         ##         ##             ##           " << endl;
-		cout << "\t\t\t\t\t\t" << "##	##      ##________    ##________    ##      ##        ##         ##             ##           " << endl;
-		cout << "\t\t\t\t\t\t" << "########	\\\\########    \\\\########    ##       ##       ##         ##             ##         " << endl;
-		cout << "\t\t\t\t\t\t" << "-______________________________________________________________________________________________-" << "\n\n";
-		cout << "\t\t\t\t\t\t\t\t\t\t" << "  Enter Encryption Password: " << endl;
-		cout << "\t\t\t\t\t\t\t\t\t\t" << "/---------------------------\\" << endl;
+		printw ("\t\t\t\t\t\t ########		//########    //########    #########    ##        ##    #####    ##############       "  );
+		printw ("\t\t\t\t\t\t ##	##      ##		      ##		      ##      ##    ##      ##     ##  ##         ##           "  );
+		printw ("\t\t\t\t\t\t ##	 ##     ##            ##            ##       ##    ##    ##      ##   ##        ##           "  );
+		printw ("\t\t\t\t\t\t ##	 ##     ##________    ##     	    ##        ##    ##  ##       ##   ##        ##             "  );
+		printw ("\t\t\t\t\t\t ##	 ##     ##########    ##    	    ##       ##      ####        ##   ##        ##             "  );
+		printw ("\t\t\t\t\t\t ##       ##   ##		      ##            ##     ###        ##         ##  ##         ##      "  );
+		printw ("\t\t\t\t\t\t ##	 ##     ##            ##            ########          ##         #####          ##           "  );
+		printw ("\t\t\t\t\t\t ##	 ##     ##            ##            ##    ###         ##         ##             ##           "  );
+		printw ("\t\t\t\t\t\t ##	##      ##________    ##________    ##      ##        ##         ##             ##           "  );
+		printw ("\t\t\t\t\t\t ########		\\\\########    \\\\########    ##       ##       ##         ##             ##         "  );
+		printw ("\t\t\t\t\t\t -______________________________________________________________________________________________- \n\n");
+		printw ("\t\t\t\t\t\t\t\t\t\t   Enter Encryption Password: "  );
+		printw ("\t\t\t\t\t\t\t\t\t\t /---------------------------\\"  );
 		Tabulation();
 		cin >> DecPass;
 	}
@@ -180,20 +175,29 @@ public:
 	void CheckMenu(){
 		clearScreen();
 
-		cout << "\t\t\t\t\t\t\t\t"	<< "//########	##        ##	//########	//########	##    ##" << endl;
-		cout << "\t\t\t\t\t\t\t\t"	<< "##‾‾‾‾‾‾‾‾	##        ##	##‾‾‾‾‾‾‾‾	##‾‾‾‾‾‾‾‾	##   ##" << endl;
-		cout << "\t\t\t\t\t\t\t\t"	<< "##        	##        ##	##        	##        	##  ##" << endl;
-		cout << "\t\t\t\t\t\t\t\t"	<< "##        	##________##	##________	##        	## ##" << endl;
-		cout << "\t\t\t\t\t\t\t\t"	<< "##        	############	##########	##        	####" << endl;
-		cout << "\t\t\t\t\t\t\t\t"	<< "##        	##‾‾‾‾‾‾‾‾##	##‾‾‾‾‾‾‾‾	##        	## ##" << endl;
-		cout << "\t\t\t\t\t\t\t\t"	<< "##        	##        ##	##        	##        	##  ##" << endl;
-		cout << "\t\t\t\t\t\t\t\t"	<< "##        	##        ##	##        	##        	##   ##" << endl;
-		cout << "\t\t\t\t\t\t\t\t"	<< "##________	##        ##	##________	##________	##    ##" << endl;
-		cout << "\t\t\t\t\t\t\t\t"	<< "\\\\########	##        ##	\\\\########	\\\\########	##     ##" << endl;
+		printw ("\t\t\t\t\t\t\t\t"	"//########	  ##        ##	//########	//########	##    ##"  );
+		printw ("\t\t\t\t\t\t\t\t"	"##		  	  ##        ##	##		  	##		  	##   ##"  );
+		printw ("\t\t\t\t\t\t\t\t"	"##        	  ##        ##	##        	##        	##  ##"  );
+		printw ("\t\t\t\t\t\t\t\t"	"##        	  ##________##	##________	##        	## ##"  );
+		printw ("\t\t\t\t\t\t\t\t"	"##        	  ############	##########	##        	####"  );
+		printw ("\t\t\t\t\t\t\t\t"	"##        	  ##		##	##		  	##        	## ##"  );
+		printw ("\t\t\t\t\t\t\t\t"	"##        	  ##        ##	##        	##        	##  ##"  );
+		printw ("\t\t\t\t\t\t\t\t"	"##        	  ##        ##	##        	##        	##   ##"  );
+		printw ("\t\t\t\t\t\t\t\t"	"##________	  ##        ##	##________	##________	##    ##"  );
+		printw ("\t\t\t\t\t\t\t\t"	"\\\\#######  ##	    ##        ##	\\\\########	\\\\########	##     ##"  );
 	}
 
 	void Settings(){
 
+	}
+
+	void Input(){
+		Input_B = 0;
+		while (!Input_B){
+			switch (Key){
+			//case :
+			}
+		}
 	}
 };
 
@@ -201,13 +205,16 @@ public:
 
 int main()
 {	
-	//initscr();
+	initscr();
+	raw();
+	keypad(stdscr,1);
+	noecho();
 	Menu Menu;
 	Log Log;
 	Menu.MainMenu();
 	Log.typeLog("Initializatied Log System");
-
-	//endwin();
+	sleep(2);
+	endwin();
 	return 0;
 }
 
