@@ -2,7 +2,6 @@
 #include <string>
 #include <fstream>
 #include <vector>
-#include "coniow.h"
 #include <ctime>
 
 #define Out_Encrypt_File "Encryption.txt"
@@ -27,26 +26,41 @@ void Initialization(){
 }
 
 class Log{
-time_t start = time(0);
-int seconds_since_start = difftime(time(0), start);
-long long Seconds_S;
-long long Minutes_S;
-long long Hours_S;
-	public:
+	time_t start = time(0);
+	int seconds_since_start = difftime(time(0), start);
+	long long Seconds_S;
+	long long Minutes_S;
+	long long Hours_S;
+
+public:
+
 	void typeLog(string output,bool scnd_output = 0){
 		ofstream log_file (Log_file);
-		if (scnd_output == 0){
-			Seconds_S = seconds_since_start%60;
-			Minutes_S = seconds_since_start%3600/60;
-			Hours_S = seconds_since_start/3600;
-			log_file << '[' << Hours_S << ':' << Minutes_S << ':' << Seconds_S << ']' << output; 
-		}else {
-			Seconds_S = seconds_since_start%60;
-			Minutes_S = seconds_since_start%3600/60;
-			Hours_S = seconds_since_start/3600;
-			log_file << '[' << Hours_S << ':' << Minutes_S << ':' << Seconds_S << ']' << output; 
+
+		  if (scnd_output == 0){
+		Seconds_S = seconds_since_start%60;
+		Minutes_S = seconds_since_start%3600/60;
+		Hours_S = seconds_since_start/3600;
+
+		cout << '[';
+		if (Hours_S<10){
+			log_file << '0' << Hours_S;
 		}
-		log_file.close();
+		if (Minutes_S<10){
+			log_file << '0' << Minutes_S;
+		}
+		if (Seconds_S<10){
+			log_file << '0' << Seconds_S << ']';
+		}
+		log_file << " ---> " << output << endl;
+		}
+		else {
+		   Seconds_S = seconds_since_start%60;
+		   Minutes_S = seconds_since_start%3600/60;
+		   Hours_S = seconds_since_start/3600;
+		   log_file << '[' << Hours_S << ':' << Minutes_S << ':' << Seconds_S << ']' << output; 
+		}
+		  log_file.close();
 	}
 };
 
@@ -122,6 +136,21 @@ public:
 		Tabulation();
 		cin >> DecPass;
 	}
+
+	void CheckMenu(){
+		clearScreen();
+
+		cout << "\t\t\t\t\t\t\t\t"	<< "//########	##        ##	//########	//########	##    ##" << endl;
+		cout << "\t\t\t\t\t\t\t\t"	<< "##‾‾‾‾‾‾‾‾	##        ##	##‾‾‾‾‾‾‾‾	##‾‾‾‾‾‾‾‾	##   ##" << endl;
+		cout << "\t\t\t\t\t\t\t\t"	<< "##        	##        ##	##        	##        	##  ##" << endl;
+		cout << "\t\t\t\t\t\t\t\t"	<< "##        	##________##	##________	##        	## ##" << endl;
+		cout << "\t\t\t\t\t\t\t\t"	<< "##        	############	##########	##        	####" << endl;
+		cout << "\t\t\t\t\t\t\t\t"	<< "##        	##‾‾‾‾‾‾‾‾##	##‾‾‾‾‾‾‾‾	##        	## ##" << endl;
+		cout << "\t\t\t\t\t\t\t\t"	<< "##        	##        ##	##        	##        	##  ##" << endl;
+		cout << "\t\t\t\t\t\t\t\t"	<< "##        	##        ##	##        	##        	##   ##" << endl;
+		cout << "\t\t\t\t\t\t\t\t"	<< "##________	##        ##	##________	##________	##    ##" << endl;
+		cout << "\t\t\t\t\t\t\t\t"	<< "\\\\########	##        ##	\\\\########	\\\\########	##     ##" << endl;
+	}
 };
 
 
@@ -130,7 +159,7 @@ int main()
 {	
 	Menu Menu;
 	Log Log;
-	//Menu.MainMenu();
+	Menu.CheckMenu();
 	Log.typeLog("Initializatied");
 
 	return 0;
