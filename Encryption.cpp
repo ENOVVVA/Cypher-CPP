@@ -11,6 +11,7 @@
 #define Out_Encrypt_File "Encryption.txt"
 #define In_Encrypt_File "PUT HERE ENCRYPTED FILE.txt"
 #define Log_file "Log.txt"
+#define Settings_file_PATH "Settings.txt"
 
 using namespace std;
 
@@ -33,20 +34,42 @@ void Tabulation(long long _length = 1){
 		printw("\t\t\t\t\t\t");
 	}
 }
-
-void Initialization(){
-}
-
-
 class Log{
 time_t start = time(0);
 int seconds_since_start = difftime(time(0), start);
 long long Seconds_S;
 long long Minutes_S;
 long long Hours_S;
+bool Log_B;
+bool Pointer_Settings = 0;
+string InSettings;
 	public:
+	void Initialization(){
+		ifstream settings_file(Settings_file_PATH, fstream::in);
+		while (!settings_file.eof()){
+			getline(settings_file, InSettings);
+			if (Pointer_Settings==0){
+			if (InSettings == "Log_Save=1") {
+			Log_B = 0;
+			Pointer_Settings=1;
+			typeLog("Pointer == 1");
+			typeLog(InSettings);
+			}
+			else Log_B = 1;
+			}
+		}
+		settings_file.close();
+		if (Log_B==1){
+		ofstream log_file (Log_file, fstream::trunc);
+		log_file << "\t\t\t\t###___Initializatied Log System___###\n";
+		log_file.close();
+		} else { ofstream log_file (Log_file, fstream::app);
+		log_file << "\t\t\t\t###___Initializatied Log System___###\n";
+		log_file.close();
+		}
+	}
 	void typeLog(string output,bool scnd_output = 0){
-		ofstream log_file (Log_file, fstream::ate);
+		ofstream log_file (Log_file, fstream::app);
 		if (scnd_output == 0){
 			Seconds_S = seconds_since_start%60;
 			Minutes_S = seconds_since_start%3600/60;
@@ -382,6 +405,10 @@ public:
 		if (Choice_MainMenuL_R==1){
 		Exit();
 		} else ExitHelp();
+		if (Choice_MainMenuL_R== 3){
+			//if (TrackPoint==1) Log.typeLog("")
+
+		}
 		}
 	}
 	}
@@ -396,10 +423,10 @@ int main()
 	cbreak();
 	Menu Menu;
 	Log Log;
+	Log.Initialization();
 	Menu.MainMenu();
-	Log.typeLog("Initializatied Log System");
+	Log.typeLog("Catboy Kami");
 	Menu.InputMainMenu();
-	sleep(2);
 	endwin();
 	return 0;
 }
