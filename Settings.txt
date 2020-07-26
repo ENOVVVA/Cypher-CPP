@@ -1,3 +1,6 @@
 SETTINGS {       
 Log_Save=0
+Language=ru_RU 
+//      en_EN |ru_RU | ua_UA
+Green_Mode=1
 }

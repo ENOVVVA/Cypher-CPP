@@ -1,1 +1,3 @@
 				###___Initializatied Log System___###
+[00 : 00 : 00] ---> Main Menu Called
+[00 : 00 : 00] ---> Settings Menu Called
