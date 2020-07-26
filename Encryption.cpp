@@ -15,15 +15,6 @@
 
 using namespace std;
 
-WINDOW *menu_win;
-char *MainMenuN[] = { 
-			"Encrypt",
-			"Decrypt",
-			"Check Hash Between",
-			"Settings",
-			"Exit",
-		  };
-
 void clearScreen(long long _length = 1){
 	for (int i = 0; i <= _length; i++){
 		printw("\n\n\n\n\n\n\n\n\n\n\n");
@@ -40,8 +31,8 @@ int seconds_since_start = difftime(time(0), start);
 long long Seconds_S;
 long long Minutes_S;
 long long Hours_S;
-bool Log_B;
 bool Pointer_Settings = 0;
+bool Log_B;
 string InSettings;
 	public:
 	void Initialization(){
@@ -50,20 +41,18 @@ string InSettings;
 			getline(settings_file, InSettings);
 			if (Pointer_Settings==0){
 			if (InSettings == "Log_Save=1") {
-			Log_B = 0;
+			Log_B = 1;
 			Pointer_Settings=1;
-			typeLog("Pointer == 1");
-			typeLog(InSettings);
 			}
-			else Log_B = 1;
+			else Log_B = 0;
 			}
 		}
 		settings_file.close();
 		if (Log_B==1){
-		ofstream log_file (Log_file, fstream::trunc);
+		ofstream log_file (Log_file, fstream::app);
 		log_file << "\t\t\t\t###___Initializatied Log System___###\n";
 		log_file.close();
-		} else { ofstream log_file (Log_file, fstream::app);
+		} else { ofstream log_file (Log_file, fstream::trunc);
 		log_file << "\t\t\t\t###___Initializatied Log System___###\n";
 		log_file.close();
 		}
@@ -110,40 +99,21 @@ class Menu : public Log{
 	string ChIP;
 	string ChI;
 	size_t Key;
-	int Main_Menu_N_Choice = sizeof(*MainMenuN) / sizeof(char *);
 	int highlightU_D = 1;
 	int highlightL_R = 1;
 	int Choice_MainMenuU_D;
 	int Choice_MainMenuL_R;
+const	short MainMenu_N = 5;
+const	short Settings_N = 3;
 	short TrackPoint; // MainMenu - 1, EncMenu - 2, DecMenu - 3, Settings - 4
 
 public:
 	Log Log;
 	
 
-/*void print_box(WINDOW *menu_win, int highlight)
-{
-	int x, y, i;	
-
-	x = 2;
-	y = 2;
-	box(menu_win, 0, 0);
-	for(i = 0; i < Main_Menu_N_Choice; ++i)
-	{	if(highlight == i + 1)
-		{	wattron(menu_win, A_REVERSE); 
-			mvwprintw(menu_win, y, x, "%s", MainMenuN[i]);
-			wattroff(menu_win, A_REVERSE);
-		}
-		else
-			mvwprintw(menu_win, y, x, "%s", MainMenuN[i]);
-		++y;
-	}
-	wrefresh(menu_win);
-}*/
-
 	void MainMenu(){
 		clear();
-		
+		attron(A_BOLD);
 		printw ("\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t###             ###	//########	####         ##	     ##        ##\n") ;
 		printw ("\t\t\t\t\t\t\t\t## ##         ## ##	##		## ##        ##	     ##        ##\n") ;
 		printw ("\t\t\t\t\t\t\t\t##   ##     ##   ##	##        	##  ##       ##	     ##        ##\n") ;
@@ -155,6 +125,7 @@ public:
 		printw ("\t\t\t\t\t\t\t\t##               ##	##________	##        ## ##	     ###      ###\n") ;
 		printw ("\t\t\t\t\t\t\t\t##               ##	\\\\########	##         ####	      ##########\n") ;
 		printw ("\t\t\t\t\t\t\t\t_________________________________________________________________________\n\n\n\n");
+		attroff(A_BOLD);
 		printw ("\t\t\t\t\t\t\t\t\t\t\t //-----------------------\\\\\n") ;
 		printw ("\t\t\t\t\t\t\t\t\t\t\t|| What do you want to do? ||\n") ;
 		printw ("\t\t\t\t\t\t\t\t\t\t\t||  $$$$$$$$$$$$$$$$$$$$$  ||\n") ;
@@ -266,9 +237,9 @@ public:
 		printw ("\t\t\t\t\t\t ##	##      ##		      ##		      ##      ##    ##      ##     ##  ##         ##           "  );
 		printw ("\t\t\t\t\t\t ##	 ##     ##            ##            ##       ##    ##    ##      ##   ##        ##           "  );
 		printw ("\t\t\t\t\t\t ##	 ##     ##________    ##     	    ##        ##    ##  ##       ##   ##        ##             "  );
-		printw ("\t\t\t\t\t\t ##	 ##     ##########    ##    	    ##       ##      ####        ##   ##        ##             "  );
-		printw ("\t\t\t\t\t\t ##       ##   ##		      ##            ##     ###        ##         ##  ##         ##      "  );
-		printw ("\t\t\t\t\t\t ##	 ##     ##            ##            ########          ##         #####          ##           "  );
+		printw ("\t\t\t\t\t\t ##	  ##    ##########    ##    	    ##       ##      ####        ##   ##        ##             "  );
+		printw ("\t\t\t\t\t\t ##      ##    ##		      ##            ##     ###        ##         ##  ##         ##      "  );
+		printw ("\t\t\t\t\t\t ##	  ##    ##            ##            ########          ##         #####          ##           "  );
 		printw ("\t\t\t\t\t\t ##	 ##     ##            ##            ##    ###         ##         ##             ##           "  );
 		printw ("\t\t\t\t\t\t ##	##      ##________    ##________    ##      ##        ##         ##             ##           "  );
 		printw ("\t\t\t\t\t\t ########		\\\\########    \\\\########    ##       ##       ##         ##             ##         "  );
@@ -297,6 +268,21 @@ public:
 	}
 
 	void Settings(){
+
+	clear();
+	printw ("\n\n\n\n\n\n\t\t\t\t                                                                    \t      ___________\n");                                                                  
+	printw("\t\t\t\t\t\t\t     /#######   //########  ##############  ##############  ######   /###########       /####### \n");
+	printw("\t\t\t\t\t\t\t    //          ##	    ##############  ##############  ######  /###########|      //        \n");
+	printw("\t\t\t\t\t\t\t   //           ##                ##              ##                ##         #|     //         \n");
+	printw("\t\t\t\t\t\t\t  //            ##________        ##              ##          ##    ##         #|    //          \n");
+	printw("\t\t\t\t\t\t\t //             ##########        ##              ##          ##    ##              //           \n");
+	printw("\t\t\t\t\t\t\t \\\\=====\\\\      ##	          ##              ##          ##    ##     _______  \\\\=====\\\\\n");
+	printw("\t\t\t\t\t\t\t         //     ##                ##              ##          ##    ##     |#|  ||          //   \n");
+	printw("\t\t\t\t\t\t\t        //      ##                ##              ##          ##    ##          ||         //    \n");
+	printw("\t\t\t\t\t\t\t       //       ##________        ##              ##          ##    ##          ||        //     \n");
+	printw("\t\t\t\t\t\t\t ######/        \\\\########        ##              ##          ##    #############|  ######/      \n");
+	printw ("\n\n\n\n\t\t\t\t\t\t\t");
+	refresh();
 
 	};
 
@@ -335,11 +321,19 @@ public:
 	{	Key = getch();
 		switch(Key)
 		{	case KEY_UP:
+			//if (MainMenu_B){
 				highlightU_D--;
 				if (highlightU_D <= 0)
-					highlightU_D=5;
+					highlightU_D=MainMenu_N;
 					MainMenu();
 					break;
+			//} else if (MainSettings_B){
+				//highlightU_D--;
+				//if (highlightU_D <= 0)
+				//	highlightU_D=Settings_N;
+				//	Settings();
+				//	break;
+			//}
 			case KEY_DOWN:
 			highlightU_D++;
 			if (highlightU_D >= 6)
@@ -382,35 +376,38 @@ public:
 		highlightU_D = 1;
 		if (Choice_MainMenuL_R==1){
 		EncMenu();
-		} else EncHelp();
+		} else if (Choice_MainMenuL_R==2) EncHelp();
 		} else if (Choice_MainMenuU_D == 2){
 		Choice_MainMenuU_D = 1;
 		highlightU_D = 1;
 		if (Choice_MainMenuL_R==1){
 		DecMenu();
-		} else DecHelp();
+		} else if (Choice_MainMenuL_R==2) DecHelp();
 		} else if (Choice_MainMenuU_D == 3){
 		Choice_MainMenuU_D = 1;
 		highlightU_D = 1;
 		if (Choice_MainMenuL_R==1){
 		CheckMenu();
-		} else CheckHelp();
+		} else if (Choice_MainMenuL_R==2) CheckHelp();
 		} else if (Choice_MainMenuU_D == 4){
 		Choice_MainMenuU_D = 1;
 		highlightU_D = 1;
 		if (Choice_MainMenuL_R==1){
 		Settings();
-		} else SettingsHelp();
+		} else if (Choice_MainMenuL_R==2) SettingsHelp();
 		} else if (Choice_MainMenuU_D == 5){
 		if (Choice_MainMenuL_R==1){
 		Exit();
-		} else ExitHelp();
+		} else if (Choice_MainMenuL_R==2) ExitHelp();
 		if (Choice_MainMenuL_R== 3){
 			//if (TrackPoint==1) Log.typeLog("")
 
 		}
 		}
 	}
+		if (MainSettings_B){
+
+		}
 	}
 };
 
@@ -425,7 +422,6 @@ int main()
 	Log Log;
 	Log.Initialization();
 	Menu.MainMenu();
-	Log.typeLog("Catboy Kami");
 	Menu.InputMainMenu();
 	endwin();
 	return 0;
