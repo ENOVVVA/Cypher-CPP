@@ -1,4 +1,8 @@
-#include "iostream"
+// Author : Land Maze
+// All rights reserved and copyright protected
+// Licensed GNU c.
+
+#include <iostream>
 #include <string>
 #include <fstream>
 #include <vector>
@@ -6,94 +10,48 @@
 #include <unistd.h>
 #include <ncurses.h>
 
+
+
+#define STUFF highlightU_D, highlightL_R, TrackPoint
 #define WIDTH 30
 #define HEIGHT 10 
 #define Out_Encrypt_File "Encryption.txt"
 #define In_Encrypt_File "PUT HERE ENCRYPTED FILE.txt"
-#define Log_file "Log.txt"
+#define Log_file "txt"
 #define Settings_file_PATH "Settings.txt"
+using namespace std; // I'm using namespace STD for economy time, i do not use and other namespace
 
-using namespace std;
-bool Color_B;
+bool Color_B; // Global string for all classes
+string password; // Global string for all classes
+string text; // Global string for all classes
 
 
-void clearScreen(long long _length = 1){
-	for (int i = 0; i <= _length; i++){
-		printw("\n\n\n\n\n\n\n\n\n\n\n");
-	}
-}
-void Tabulation(long long _length = 1){
-	for (int i = 0; i <= _length; i++){
-		printw("\t\t\t\t\t\t");
-	}
-}
-class Log{
-time_t start = time(0);
-int seconds_since_start = difftime(time(0), start);
-long long Seconds_S;
-long long Minutes_S;
-long long Hours_S;
-bool Pointer_Settings = 0;
-bool Log_B;
-string InSettings;
-	public:
-	
-	void Initialization(){
-		ifstream settings_file(Settings_file_PATH, fstream::in);
-		while (!settings_file.eof()){
-			getline(settings_file, InSettings);
-			if (Pointer_Settings==0){
-			if (InSettings == "Log_Save=1") {
-			Log_B = 1;
-			Pointer_Settings=1;
-			}
-			else Log_B = 0;
-			}
-		}
-		settings_file.close();
-		if (Log_B==1){
-		ofstream log_file (Log_file, fstream::app);
-		log_file << "\t\t\t\t###___Initializatied Log System___###\n";
-		log_file.close();
-		} else { ofstream log_file (Log_file, fstream::trunc);
-		log_file << "\t\t\t\t###___Initializatied Log System___###\n";
-		log_file.close();
-		}
-	}
-	void typeLog(string output,bool scnd_output = 0){
-		ofstream log_file (Log_file, fstream::app);
-		if (scnd_output == 0){
-			Seconds_S = seconds_since_start%60;
-			Minutes_S = seconds_since_start%3600/60;
-			Hours_S = seconds_since_start/3600;
-			log_file << '[';
-			if (Hours_S<10){log_file << '0' << Hours_S;}else log_file << Hours_S;
-			log_file << " : ";
-			if (Minutes_S<10){log_file << '0' << Minutes_S;}else log_file << Minutes_S;
-			log_file << " : ";
-			if (Seconds_S<10){log_file << '0' << Seconds_S << ']';}else log_file << Seconds_S;
-			log_file << " ---> " << output << '\n';
-		}else {
-			Seconds_S = seconds_since_start%60;
-			Minutes_S = seconds_since_start%3600/60;
-			Hours_S = seconds_since_start/3600;
-			log_file << '[';
-			if (Hours_S<10){log_file << '0' << Hours_S;}else log_file << Hours_S;
-			log_file << " : ";
-			if (Minutes_S<10){log_file << '0' << Minutes_S;}else log_file << Minutes_S;
-			log_file << " : ";
-			if (Seconds_S<10){log_file << '0' << Seconds_S << ']';}else log_file << Seconds_S;
-			log_file << " ---> " << output << '\n';
-		}
-		log_file.close();
-	}
-	
-};
+// Very stupid function
+ void clearScreen(long long _length = 1){
+ 	for (int i = 0; i <= _length; i++){
+ 		printw("\n\n\n\n\n\n\n\n\n\n\n");
+ 	}
+ }
+ 
+ // Again stupid function
+ void Tabulation(long long _length = 1){
+ 	for (int i = 0; i <= _length; i++){
+ 		printw("\t\t\t\t\t\t");
+ 	}
+ }
 
-class Menu : public Log{
+class Menu{
+	protected:
+	time_t start;
+	long long Seconds_S;
+	long long Minutes_S;
+	long long Hours_S;
+	bool Pointer_Settings;
+	bool Log_B;
+	string InSettings;
 	bool EncPass;
 	bool DecPass;
-	bool MainMenu_B = 1;
+	bool MainMenu_B;
 	bool MainEncrypt_B;
 	bool MainDecrypt_B;
 	bool CheckMenu_B;
@@ -107,91 +65,57 @@ class Menu : public Log{
 	bool ExitHelp_B;
 	bool Input_B_B;
 	bool Log_Save_B;
-	bool Language_B = 0;
-	short Language_N = 1; // En=1, Ru=2, Ua=3
+	bool Language_B;
+	bool Secure_Input_B;
+	char decision;
+	short Language_N; // En=1, Ru=2, Ua=3
 	string ChIP;
 	string ChI;
 	string line;
 	size_t Key;
-	int highlightU_D = 1;
-	int highlightL_R = 1;
-	int Choice_MainMenuU_D;
-	int Choice_MainMenuL_R;
-	const short MainMenu_N_U_D = 5;
-	const short MainMenu_N_L_R = 3;
-	const short Settings_N = 4;
-
-	short TrackPoint = 0; // MainMenu - 1, EncMenu - 2, DecMenu - 3, CheckMenu - 4 Settings - 5, Exit - 6, EncMenuHelp - 7, DecMenuHelp - 8, CheckMenuHelp - 9, SettingsHelp - 10, ExitHelp - 11
-
+	int8_t highlightU_D;
+	int8_t highlightL_R;
+	int8_t Choice_MainMenuU_D;
+	int8_t Choice_MainMenuL_R;
+	int8_t Choice_SettingsU_D;
+	int8_t Choice_SettingsL_R;
+	short MainMenu_N_U_D;
+	short MainMenu_N_L_R;
+	short Settings_N;
+	short TrackPoint; // MainMenu - 1, EncMenu - 2, DecMenu - 3, CheckMenu - 4 Settings - 5, Exit - 6, EncMenuHelp - 7, DecMenuHelp - 8, CheckMenuHelp - 9, SettingsHelp - 10, ExitHelp - 11
+	string password;
+	string text;	
+	int8_t PP;
+	int8_t keyC; // How long the key is
+	int8_t keys; // Key
+	int8_t textC; // How many characters
+	string texts;
+	char textArray[255];
 public:
+// Must be constructor but he stupid
+	Menu(){
+	MainMenu_N_U_D = 5;
+	MainMenu_N_L_R = 3;
+	highlightU_D = 1;
+	highlightL_R = 1;
+	Settings_N = 4;
+	TrackPoint = 0;
+	Language_N = 1;
+	Language_B = 0;
+	MainMenu_B = 1;
+	Pointer_Settings = 0;
+	start = time(0);
+}
 
-	Log Log;
-
-	void Check_TrackPointer(short id){
-			if (TrackPoint!= id){
-			TrackPoint = id;
-			if (TrackPoint==1)
-			MainMenu_B = 1;
-			 else {
-				MainMenu_B = 0;
-				if (TrackPoint==2)
-					MainEncrypt_B = 1;
-				 else {
-					MainEncrypt_B = 0;
-					if (TrackPoint==3)
-						MainDecrypt_B = 1;
-					 else {
-						MainDecrypt_B = 0;
-						if (TrackPoint==4) 
-						CheckMenu_B = 1;
-						else{
-							CheckMenu_B = 0;
-							if (TrackPoint==5)
-							MainSettings_B = 1;
-							else {
-								MainSettings_B = 0;
-								if (TrackPoint==6)
-								MainExit_B = 1;
-								else {
-									MainExit_B = 0;
-									if (TrackPoint==7)
-									EncHelp_B = 1;
-									else {
-										EncHelp_B = 0;
-										if (TrackPoint==8)
-										DecHelp_B = 1;
-										else {
-											DecHelp_B = 0;
-											if (TrackPoint==9)
-											CheckHelp_B=1;
-											else {
-												CheckHelp_B = 0;
-												if (TrackPoint==10)
-												SettingsHelp_B=1;
-												else {
-													SettingsHelp_B = 0;
-													if (TrackPoint==11)
-													ExitHelp_B=1;
-													else ExitHelp_B=0;
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
+// Main menu, starting for default
 	void MainMenu(){
+
 		if (TrackPoint!=1){
-			Log.typeLog("Main Menu Called");
+			typeLog("Main Menu Called");
 			highlightU_D=1;
 			highlightL_R=1;
-			Check_TrackPointer(1);
+			TrackPoint=1;
+			initscr();
 		}
 		clear();
 		attron(A_BOLD);
@@ -237,6 +161,7 @@ public:
 			printw ("   Check Hash Between    ");
 			attroff(A_REVERSE | A_BLINK);
 			 
+
 		}
 		else 
 			printw ("   Check Hash Between    ");
@@ -263,6 +188,15 @@ public:
 		else 
 			printw ("          Exit           ");
 			printw ("||\n");
+			printw ("\t\t\t\t\t\t\t\t\t\t\t||");
+		if (highlightU_D==6){
+			attron(A_REVERSE | A_BLINK);
+			printw ("  Server (In progress)   ");
+			attroff(A_REVERSE | A_BLINK);
+		}
+		else 
+			printw ("  Server (In progress)   ");
+			printw ("||\n");
 		
 		printw ("\t\t\t\t\t\t\t\t\t\t\t \\\\-----------------------//\n");
 		printw ("\n\n\t\t\t\t\t\t\t\t\t\t  ");
@@ -287,64 +221,13 @@ public:
 		}
 		else printw ("< Back >\n");
 		refresh();
-		
 	}
 
-	void EncMenu(){
-		if (TrackPoint!=2){
-			Log.typeLog("Main Menu Called");
-			Check_TrackPointer(2);
-		}
-		clear();
-
-		printw ("\n\t\t\t\t\t\t\t //########	####         ##	  //########	#########     ##        ##  #####    ##############"  );
-		printw ("\n\t\t\t\t\t\t\t ##	    	## ##        ##	  ##	  	##      ##     ##      ##   ##  ##         ##      "  );
-		printw ("\n\t\t\t\t\t\t\t ##        	##  ##       ##	  ##        	##       ##     ##    ##    ##   ##        ##      "  );
-		printw ("\n\t\t\t\t\t\t\t ##________	##   ##      ##	  ##      	##        ##     ##  ##     ##   ##        ##         "  );
-		printw ("\n\t\t\t\t\t\t\t ##########	##    ##     ##	  ##      	##       ##       ####      ##   ##        ##         "  );
-		printw ("\n\t\t\t\t\t\t\t ##	  	##     ##    ##	  ##        	##     ###         ##       ##  ##         ##      "  );
-		printw ("\n\t\t\t\t\t\t\t ##        	##      ##   ##	  ##        	########           ##       #####          ##      "  );
-		printw ("\n\t\t\t\t\t\t\t ##        	##       ##  ##	  ##        	##    ###          ##       ##             ##      "  );
-		printw ("\n\t\t\t\t\t\t\t ##________	##        ## ##	  ##________	##      ##         ##       ##             ##      "  );
-		printw ("\n\t\t\t\t\t\t\t \\\\########	##         ####	  \\\\########	##       ##        ##       ##             ##      "  );
-		printw ("\n\t\t\t\t\t\t\t -_____________________________________________________________________________________________- \n\n");
-		printw ("\n\t\t\t\t\t\t\t\t\t\t       At least 4 characters \n\n");
-		printw ("\n\t\t\t\t\t\t\t\t\t\t\t  Enter password: "  );
-		printw ("\n\t\t\t\t\t\t\t\t\t\t       _------------------_"  );
-		Tabulation();
-		refresh();
-		
-	}
-
-	void DecMenu(){
-		if (TrackPoint!=3){
-			Log.typeLog("Main Menu Called");
-			Check_TrackPointer(3);
-		}
-		clear();
-
-		printw ("\t\t\t\t\t\t ########		//########    //########    #########    ##        ##    #####    ##############       "  );
-		printw ("\t\t\t\t\t\t ##	##      ##		      ##		      ##      ##    ##      ##     ##  ##         ##           "  );
-		printw ("\t\t\t\t\t\t ##	 ##     ##            ##            ##       ##    ##    ##      ##   ##        ##           "  );
-		printw ("\t\t\t\t\t\t ##	 ##     ##________    ##     	    ##        ##    ##  ##       ##   ##        ##             "  );
-		printw ("\t\t\t\t\t\t ##	  ##    ##########    ##    	    ##       ##      ####        ##   ##        ##             "  );
-		printw ("\t\t\t\t\t\t ##      ##    ##		      ##            ##     ###        ##         ##  ##         ##      "  );
-		printw ("\t\t\t\t\t\t ##	  ##    ##            ##            ########          ##         #####          ##           "  );
-		printw ("\t\t\t\t\t\t ##	 ##     ##            ##            ##    ###         ##         ##             ##           "  );
-		printw ("\t\t\t\t\t\t ##	##      ##________    ##________    ##      ##        ##         ##             ##           "  );
-		printw ("\t\t\t\t\t\t ########		\\\\########    \\\\########    ##       ##       ##         ##             ##         "  );
-		printw ("\t\t\t\t\t\t -______________________________________________________________________________________________- \n\n");
-		printw ("\t\t\t\t\t\t\t\t\t\t   Enter Encryption Password: "  );
-		printw ("\t\t\t\t\t\t\t\t\t\t /---------------------------\\"  );
-		Tabulation();
-		refresh();
-		
-	}
-
+// Method that calling inside the class
 	void CheckMenu(){
 		if (TrackPoint!=4){
-			Log.typeLog("Main Menu Called");
-			Check_TrackPointer(4);
+			typeLog("Main Menu Called");
+			TrackPoint=4;
 		}
 		clear();
 
@@ -362,11 +245,12 @@ public:
 		
 	}
 
+// Method that calling inside the class
 	void Settings(){
 		if (TrackPoint!=5){
-			Log.typeLog("Settings Menu Called");
+			typeLog("Settings Menu Called");
 			highlightU_D=1;
-			Check_TrackPointer(5);
+			TrackPoint=5;
 		}
 	clear();
 	printw ("\n\n\n\n\n\n\t\t\t\t                                                                    \t      ___________\n");                                                                  
@@ -395,20 +279,20 @@ public:
 	printw ("\n\n\n\n\t\t\t\t\t\t\t\t\t\tLanguage  >>>     ");
 	if(Language_N==1){
 	attron(A_UNDERLINE | A_BOLD);
-	printw("English");
+		printw("English");
 	attroff(A_UNDERLINE | A_BOLD);
 	printw("     Russian     Ukranian");
 	} else if (Language_N==2){
 	printw("English     ");
 	attron(A_UNDERLINE | A_BOLD);
-	printw("Russian");
+		printw("Russian");
 	attroff(A_UNDERLINE | A_BOLD);
-	printw("Ukranian");
+	printw("     Ukranian");
 	}else if (Language_N==3){
-			printw("English     ");
+	printw("English     ");
 	printw("Russian     ");
 	attron(A_UNDERLINE | A_BOLD);
-	printw("Ukranian");
+		printw("Ukranian");
 	attroff(A_UNDERLINE | A_BOLD);
 	}
 	printw ("\n\n\n\n\t\t\t\t\t\t\t\t\t\tColor     >>> 	   ||");
@@ -429,89 +313,109 @@ public:
 	refresh();
 	};
 
-	void Exit(){
-		if (TrackPoint!=6){
-			Log.typeLog("Main Menu Called");
-			Check_TrackPointer(6);
-		}else{
-			printw ("Exit");
-			refresh();
-		}
+// Method that calling inside the class
+	short Exit(){
+		clear();
+		endwin();
+		cout << "\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\tYou will exit this proces in 3 seconds\n\t\t\t\t\t\t\t\tAre you sure about that? Y/N ---> ";
+		std::cin >> decision;
+		if (decision == 'Y'|| decision == 'y'){
+			return true;
+		} else MainMenu();
 	}
 
+// Method that calling inside the class
+	void Server(){
+	printw ("Waiting for connection for");
+	refresh();
+}
+
+// Method for help that calling inside the class
 	void EncHelp(){
 		if (TrackPoint!=7){
-			Log.typeLog("Main Menu Called");
-			Check_TrackPointer(7);
+			typeLog("Main Menu Called");
+			TrackPoint=7;
 		}else{
 		clear();
 		printw ("HelpEnc");
 		}
 	}
 
+// Method for help that calling inside the class
 	void DecHelp(){
 		if (TrackPoint!=8){
-			Log.typeLog("Main Menu Called");
-			Check_TrackPointer(8);
+			typeLog("Main Menu Called");
+			TrackPoint=8;
 		clear();
 		printw ("HelpDec");
 		}
 	}
 
+// Method for help that calling inside the class
 	void CheckHelp(){
 		if (TrackPoint!=9){
-			Log.typeLog("Main Menu Called");
-			Check_TrackPointer(9);
+			typeLog("Main Menu Called");
+			TrackPoint=9;
 		clear();
 		printw ("HelpCheck");
 		}
 	}
 
+// Method for help that calling inside the class
 	void SettingsHelp(){
 		if (TrackPoint!=10){
-			Log.typeLog("Main Menu Called");
-			Check_TrackPointer(10);
+			typeLog("Main Menu Called");
+			TrackPoint=10;
 		clear();
 		printw ("HelpSetting");
 		}
 	}
 
+// Method for help that calling inside the class
 	void ExitHelp(){
 		if (TrackPoint!=11){
-			Log.typeLog("Main Menu Called");
-			Check_TrackPointer(11);
+			typeLog("Main Menu Called");
+			TrackPoint=11;
 		clear();
 		printw ("HelpExit");
 		}
 	}
 
+// Checking setting from Settings.txt at start program
 	void CheckerSettings(){
 		ifstream settings_file(Settings_file_PATH, fstream::in);
 		while (!settings_file.eof()){
 			getline(settings_file, line);
-			if (!Log_Save_B)
 			if (line=="Log_Save=1")
 			Log_Save_B=1;
-			if (!Language_B)
-			if (line=="Language=ru_RU"){
+			if (!Language_B){
+			if (line=="Language=2"){
 			Language_N=2;
 			Language_B=1;
 			}else
-			if (line=="Language=en_EN"){
+			if (line=="Language=1"){
 			Language_N=1;
 			Language_B=1;
 			}else	
-			if (line=="Language=ua_UA"){
+			if (line=="Language=3"){
 			Language_N=3;
 			Language_B=1;
 			}
+			}
 			if (line=="Green_Mode=1")
 			Color_B=1;
+			if (line=="Secure_Input=1")
+			Secure_Input_B=1;
 		}
+		ifstream close;
 	}
 
+// Method for reading key pressed
 	void MainInput(){
-		
+		if (int d=0 !=1 ) {
+		MainMenu();
+		d++;
+		}
 	while(1)
 	{	Key = getch();
 		switch(Key)
@@ -590,50 +494,144 @@ public:
 			} else if (MainDecrypt_B){
 
 			} else if (MainSettings_B){
-
+			Choice_SettingsL_R=highlightL_R;
+			Choice_SettingsU_D=highlightU_D;
 			} else if (MainExit_B){
 
 			}
 			LogicalProccess();
 			break;
 			
-			default:
-			break;
+			default: break;
 			};
 		}
 	}
 
-	void InputProtected(){
-
-}
-
+// Method for LogicalProccess in menu (ONLY IN MENU)
 	void LogicalProccess(){
-			if (MainMenu_B){
-			if (Choice_MainMenuL_R==1){
+		switch (TrackPoint){
+			case 1 : {
+			if (Choice_MainMenuL_R==1)
             if (Choice_MainMenuU_D==1)
-				EncMenu();
+				Encryption();
 			 else if (Choice_MainMenuU_D==2)
-				DecMenu();
+				Decrypt();
 			 else if (Choice_MainMenuU_D==3)
 				CheckMenu();
 			 else if (Choice_MainMenuU_D==4)
 				Settings();
 			 else if (Choice_MainMenuU_D==5)
 				Exit();
+			 else if (Choice_MainMenuU_D==6)
+			 	Server();
 			
+	break;
+				}
+		case 2 : {
+	break;
+		}
+		case 3 : {
+	break;
+		}
+		case 4 : {
+	break;
+		}
+		case 5 : {
+	break;
+		}
+		case 6 : {
+	break;
+		}
+		default : break;
+	}	
+}
+
+// Method for Initialization Log System
+	void Initialization(){
+		ifstream settings_file(Settings_file_PATH, fstream::in);
+		while (!settings_file.eof()){
+			getline(settings_file, InSettings);
+			if (Pointer_Settings==0){
+			if (InSettings == "Log_Save=1") {
+			Log_B = 1;
+			Pointer_Settings=1;
 			}
-			} else if (MainEncrypt_B){
-
-			} else if (MainDecrypt_B){
-
-			} else if (MainSettings_B){
-
-			} else if (MainExit_B){
-
+			else Log_B = 0;
 			}
+		}
+		settings_file.close();
+		if (Log_B==1){
+		ofstream log_file (Log_file, fstream::app);
+		log_file << "\t\t\t\t###___Initializatied Log System___###\n";
+		log_file.close();
+		} else { ofstream log_file (Log_file, fstream::trunc);
+		log_file << "\t\t\t\t###___Initializatied Log System___###\n";
+		log_file.close();
+		}
+	}
+
+// Method for logging in Log.txt
+	void typeLog(string output,bool scnd_output = 0){
+
+		ofstream log_file (Log_file, fstream::app);
+			int seconds_since_start = difftime(time(0), start);
+			Seconds_S = seconds_since_start%60;
+			Minutes_S = seconds_since_start%3600/60;
+			Hours_S = seconds_since_start/3600;
+			log_file << '[';
+			if (Hours_S<10){log_file << '0' << Hours_S;}else log_file << Hours_S;
+			log_file << " : ";
+			if (Minutes_S<10){log_file << '0' << Minutes_S;}else log_file << Minutes_S;
+			log_file << " : ";
+			if (Seconds_S<10){log_file << '0' << Seconds_S << ']';}else log_file << Seconds_S;
+			log_file << " ---> " << output << '\n';
+			log_file.close();
+	}
+
+// function for encrypt. LOGICAL, isn't it?
+	void Encryption(){ 
+		if (TrackPoint!=2){
+			typeLog("Encrypt Menu Called");
+			highlightU_D=1;
+			highlightL_R=1;
+			TrackPoint=2;
+		}
+		endwin();
+		cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t\t\t\t\tEnter you text to encrypt\t\tTip: At least 4 characters and 1 number\t-->";
+		int i = 0;
+		int key;
+		std::string text;
+		std::getline(cin, text);
+		cout << "\n\n\t\t\t\t\t\t\t\t\t\t\t\t\t\tEnter you key to encrypt\t\tTip: Only numbers allowed\t-->";
+		cin >> key;
+		string out;
+		for(auto el : text)
+			out += (char)( el + key);
+		cout << "\n\n\tHere's your result <" << out << '>';
+		Exit();
+	} 
+
+	void Decrypt(){
+		if (TrackPoint!=3){
+			typeLog("Decrypt Menu Called");
+			highlightU_D=1;
+			highlightL_R=1;
+			TrackPoint=3;
+		}
+		endwin();
+		int key;
+		cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\tEnter a text to decrypt --> ";
+		getline(cin, text);
+		cout << "\n\tEnter key to decrypt --> ";
+		cin >> key;
+		string out;
+		for(auto el : text)
+			out += (char)( el - key);
+		cout << "\n\n\tHere's your result <" << out << '>';
 	}
 };
-int main()
+
+int main(int argc, char* argv[])
 {	
 	initscr();
 	clear();
@@ -642,15 +640,10 @@ int main()
 	cbreak();
 	//start_color();
 	Menu Menu;
-	Log Log;
-	Log.Initialization();
+	Menu.Initialization();
 	Menu.CheckerSettings();
-	if (Color_B){
-	attron(COLOR_GREEN);
-	}
-	Menu.MainMenu();
 	Menu.MainInput();
+	Menu.typeLog("###___End of Program___###\n\n");
 	endwin();
-	Log.typeLog("###___End of Program___###\n\n");
 	return 0;
 }

@@ -1,6 +1,10 @@
 SETTINGS {       
 Log_Save=0
-Language=ru_RU 
-//      en_EN |ru_RU | ua_UA
+Language=1
 Green_Mode=1
+Secure_Input=0
 }
+
+Ну замість багатьох змінних
+ замість багатьох змінних
+ // MainMenu - 1, EncMenu - 2, DecMenu - 3, CheckMenu - 4 Settings - 5, Exit - 6, EncMenuHelp - 7, DecMenuHelp - 8, CheckMenuHelp - 9, SettingsHelp - 10, ExitHelp - 11
